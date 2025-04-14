@@ -1,42 +1,40 @@
 import axios from 'axios'
 import React, { useState } from 'react'
+import { addfood } from '../../service/foodService'
+import { toast } from 'react-toastify'
 
 
 const AddFood = () => {
   const[image,setImage]=useState(false)
-  const[loading,setLoading]=useState(false)
+const[loading,setLoading]=useState(false)
   const[data,setData]=useState({
     name:'',
     description:'',
     price:'',
     category:''
   })
+
   const onHandleSubmit=async(event)=>{
     event.preventDefault();
     if(!image){
-      alert("please select image")
+      toast.error("please select image")
       return
     }
-    const formdata=new FormData();
-    formdata.append('food',JSON.stringify(data))
-    formdata.append('file',image)
-
     try {
-setLoading(true)
-      const response=await axios.post("http://localhost:8080/api/foods",formdata,{headers:{"Content-Type":"multipart/form-data"}})
-      if(response.status===200){
-        alert("food added successfully")
-        setData({name:'',description:'',price:'',category:''})
-        setImage(null)
-        
-      }
+      setLoading(true)
+      await addfood(data,image)
+      toast.success("food added successfully")
+      setData({name:"",description:"",category:"",price:""})
+      setImage(null)
     } catch (error) {
-      console.log('Error',error)
-      setLoading(false)
+      toast.error("Error adding food")
       
-    }
+    }finally{
+      setLoading(false)
 
+    }
   }
+
   const onChangeHandler=(event)=>{
     const name=event.target.name;
     const value=event.target.value;
@@ -48,10 +46,10 @@ setLoading(true)
       <div className="row">
         <div className="card col-md-4">
           <div className="card-body">
-            <h2 className="mb-4">Add Food</h2>
+            <h2 className="mb-3">Add Food</h2>
             <form onSubmit={onHandleSubmit}>
             <div className="mb-2">
-                <label htmlFor="image" className="form-label">
+                <label htmlFor="image" className="form-label cursor-auto">
                 <img src={image?URL.createObjectURL(image):"./upload.png"} alt="upload" width={60}/>
                 </label>
                 <input type="file" className="form-control" id="image"  hidden onChange={(e)=>setImage(e.target.files[0])}/>

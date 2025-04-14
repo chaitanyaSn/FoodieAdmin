@@ -5,7 +5,7 @@ import ListFood from "./pages/ListFood/ListFood";
 import Orders from "./pages/Orders/Orders";
 import Navbar from "./components/Navbar/Navbar";
 import Sidebar from "./components/Sidebar/Sidebar";
-
+import { ToastContainer } from 'react-toastify';
 const App = () => {
   const[sidebarOn,setSideBar]=useState(true)
   const toggleSidebar=()=>{
@@ -17,6 +17,7 @@ const App = () => {
         <Sidebar sidebarOn={sidebarOn}/>
         <div id="page-content-wrapper">
           <Navbar toggleSidebar={toggleSidebar}/>
+          <ToastContainer/>
           <div className="container-fluid">
             <Routes>
               <Route path="/add" element={<AddFood />} />

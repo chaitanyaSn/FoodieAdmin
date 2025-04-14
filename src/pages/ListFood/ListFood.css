@@ -1,0 +1,9 @@
+.table td{
+    vertical-align: middle;
+}
+
+.text-danger i {
+    cursor: pointer;
+    font-size: 20px;
+    transition: color 0.3s ease;
+}
